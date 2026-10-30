@@ -7,370 +7,402 @@
 <title>AI Cartoon Video Maker</title>
 
 <style>
-* {
-  box-sizing: border-box;
+*{box-sizing:border-box}
+
+body{
+ margin:0;
+ background:#10111b;
+ color:white;
+ font-family:Arial,sans-serif;
+ padding-bottom:90px;
 }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #10111b;
-  color: white;
-  padding-bottom: 85px;
+header{
+ background:#191b2c;
+ color:#a78bfa;
+ text-align:center;
+ padding:20px 10px;
+ font-size:22px;
+ font-weight:bold;
 }
 
-header {
-  background: #191b2c;
-  padding: 20px 10px;
-  text-align: center;
-  color: #a78bfa;
-  font-size: 22px;
-  font-weight: bold;
-  position: sticky;
-  top: 0;
-  z-index: 5;
+.page{
+ display:none;
+ padding:18px;
 }
 
-.page {
-  display: none;
-  padding: 18px;
+.page.active{display:block}
+
+h2{color:#a78bfa}
+
+.card{
+ background:#191b2c;
+ padding:18px;
+ border-radius:15px;
+ margin-bottom:16px;
 }
 
-.page.active {
-  display: block;
+input,textarea{
+ width:100%;
+ padding:14px;
+ margin:10px 0;
+ border-radius:10px;
+ border:1px solid #45465d;
+ background:#292b40;
+ color:white;
+ font-size:15px;
 }
 
-h2 {
-  color: #a78bfa;
+textarea{height:150px}
+
+button{
+ background:#656cff;
+ color:white;
+ border:0;
+ padding:13px;
+ border-radius:10px;
+ font-weight:bold;
+ font-size:14px;
+ cursor:pointer;
 }
 
-.card {
-  background: #191b2c;
-  padding: 18px;
-  border-radius: 14px;
-  margin-bottom: 15px;
+.action{
+ width:100%;
+ margin-top:10px;
 }
 
-button, .upload {
-  background: #656cff;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  padding: 14px;
-  font-size: 15px;
-  font-weight: bold;
-  cursor: pointer;
+.preview{
+ width:100%;
+ max-height:350px;
+ object-fit:contain;
+ border-radius:12px;
+ margin-top:12px;
+ display:none;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 14px;
-  background: #292b40;
-  color: white;
-  border: 1px solid #45465d;
-  border-radius: 10px;
-  margin: 10px 0;
-  font-size: 15px;
+video{
+ width:100%;
+ margin-top:15px;
+ border-radius:12px;
+ display:none;
 }
 
-textarea {
-  height: 150px;
-  resize: vertical;
+.status{
+ color:#b9b9ce;
+ font-size:13px;
+ line-height:1.6;
 }
 
-.preview {
-  width: 100%;
-  max-height: 350px;
-  object-fit: contain;
-  margin-top: 15px;
-  border-radius: 12px;
-  display: none;
+.bottom{
+ position:fixed;
+ bottom:0;
+ left:0;
+ width:100%;
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ background:#191b2c;
+ border-top:1px solid #45465d;
+ padding:9px 2px;
+ z-index:10;
 }
 
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: #191b2c;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 10px 2px;
-  border-top: 1px solid #45465d;
-  z-index: 10;
+.nav{
+ background:transparent;
+ color:#aaaabc;
+ padding:8px 1px;
+ font-size:11px;
+ line-height:1.5;
 }
 
-.nav-btn {
-  background: transparent;
-  color: #aaaabc;
-  padding: 8px 1px;
-  font-size: 11px;
-  border-radius: 8px;
-  line-height: 1.5;
+.nav span{
+ display:block;
+ font-size:21px;
 }
 
-.nav-btn.active {
-  background: #303253;
-  color: #a78bfa;
+.nav.active{
+ color:#a78bfa;
+ background:#303253;
 }
 
-.nav-btn span {
-  display: block;
-  font-size: 20px;
-}
-
-video {
-  width: 100%;
-  border-radius: 12px;
-  margin-top: 15px;
-  display: none;
-}
-
-.small {
-  color: #aaaabc;
-  font-size: 13px;
-  line-height: 1.6;
-}
 </style>
 </head>
 
 <body>
 
-<header>✨ AI Cartoon Video Maker</header>
+<header>✨ AI CARTOON VIDEO MAKER</header>
 
-<!-- PAGE 1: PICTURE -->
+<!-- PICTURE PAGE -->
 <section id="picture" class="page active">
-  <h2>📸 Picture</h2>
-  <div class="card">
-    <h3>Upload Your Picture</h3>
-    <p class="small">Select an image from your phone.</p>
 
-    <input type="file" id="imageInput"
-    accept="image/*">
+<h2>🖼️ Picture</h2>
 
-    <img id="imagePreview" class="preview">
+<div class="card">
+<h3>Upload Your Picture</h3>
 
-    <p id="imageStatus" class="small">
-      No picture selected
-    </p>
-  </div>
+<input type="file" id="photo"
+accept="image/*">
+
+<img id="photoPreview" class="preview">
+
+<p id="photoStatus" class="status">
+No picture selected
+</p>
+
+</div>
 </section>
 
-<!-- PAGE 2: PROMPT -->
+<!-- PROMPT PAGE -->
 <section id="prompt" class="page">
-  <h2>✍️ Prompt</h2>
 
-  <div class="card">
-    <h3>Write Your Story</h3>
+<h2>✍️ Prompt</h2>
 
-    <textarea id="promptText"
-    placeholder="Describe your cartoon video here..."></textarea>
+<div class="card">
 
-    <button onclick="savePrompt()">
-      Save Prompt
-    </button>
+<h3>Write Your Story</h3>
 
-    <p id="promptStatus" class="small"></p>
-  </div>
+<textarea id="promptText"
+placeholder="Write your cartoon video story here..."></textarea>
+
+<button class="action" onclick="savePrompt()">
+Save Prompt
+</button>
+
+<p id="promptStatus" class="status"></p>
+
+</div>
 </section>
 
-<!-- PAGE 3: IMAGE TO VIDEO -->
-<section id="videoPage" class="page">
-  <h2>🎬 Images to Video</h2>
+<!-- VIDEO PAGE -->
+<section id="video" class="page">
 
-  <div class="card">
-    <h3>Create AI Video</h3>
+<h2>🎬 Images to Video</h2>
 
-    <p class="small">
-      Your selected picture and saved prompt
-      will be used for video generation.
-    </p>
+<div class="card">
 
-    <p id="videoImageStatus">Picture: Not selected</p>
-    <p id="videoPromptStatus">Prompt: Not saved</p>
+<h3>Create Your AI Video</h3>
 
-    <button onclick="generateVideo()">
-      Generate Video
-    </button>
+<p class="status">
+Your selected picture and prompt will be used
+to prepare your AI video.
+</p>
 
-    <p id="generateStatus" class="small">
-      AI video generation API is not connected yet.
-    </p>
-  </div>
+<p id="checkPhoto" class="status">
+Picture: Not selected
+</p>
+
+<p id="checkPrompt" class="status">
+Prompt: Not saved
+</p>
+
+<button class="action" onclick="createVideo()">
+Generate Video
+</button>
+
+<p id="videoStatus" class="status">
+Connect an AI video generation service to generate videos.
+</p>
+
+</div>
 </section>
 
-<!-- PAGE 4: DOWNLOAD -->
+<!-- DOWNLOAD PAGE -->
 <section id="download" class="page">
-  <h2>⬇️ Download</h2>
 
-  <div class="card">
-    <h3>Your Generated Video</h3>
+<h2>⬇️ Download</h2>
 
-    <p class="small">
-      Paste your generated video URL below
-      after connecting an AI video service.
-    </p>
+<div class="card">
 
-    <input type="url" id="videoUrl"
-    placeholder="Paste generated video URL">
+<h3>Your Video</h3>
 
-    <button onclick="downloadVideo()">
-      Download Video
-    </button>
+<p class="status">
+Paste the generated video link below.
+</p>
 
-    <video id="videoPreview" controls></video>
+<input type="url" id="videoLink"
+placeholder="Paste video URL here">
 
-    <p id="downloadStatus" class="small"></p>
-  </div>
+<button class="action" onclick="showVideo()">
+Preview Video
+</button>
+
+<video id="videoPlayer" controls></video>
+
+<button class="action" onclick="downloadVideo()">
+Download Video
+</button>
+
+<p id="downloadStatus" class="status"></p>
+
+</div>
 </section>
 
-<!-- BOTTOM NAVIGATION -->
-<nav class="bottom-nav">
+<!-- BOTTOM BUTTONS -->
+<nav class="bottom">
 
-  <button class="nav-btn active"
-  onclick="openPage('picture',this)">
-    <span>🖼️</span>Picture
-  </button>
+<button class="nav active"
+onclick="openPage('picture',this)">
+<span>🖼️</span>Picture
+</button>
 
-  <button class="nav-btn"
-  onclick="openPage('prompt',this)">
-    <span>✍️</span>Prompt
-  </button>
+<button class="nav"
+onclick="openPage('prompt',this)">
+<span>✍️</span>Prompt
+</button>
 
-  <button class="nav-btn"
-  onclick="openPage('videoPage',this)">
-    <span>🎬</span>Images to Video
-  </button>
+<button class="nav"
+onclick="openPage('video',this)">
+<span>🎬</span>Images to Video
+</button>
 
-  <button class="nav-btn"
-  onclick="openPage('download',this)">
-    <span>⬇️</span>Download
-  </button>
+<button class="nav"
+onclick="openPage('download',this)">
+<span>⬇️</span>Download
+</button>
 
 </nav>
 
 <script>
-let selectedImage = null;
-let savedPrompt = "";
 
-function openPage(page, button) {
+let photoURL = "";
+let promptSaved = "";
 
-  document.querySelectorAll(".page")
-  .forEach(p => p.classList.remove("active"));
+function openPage(id,btn){
 
-  document.getElementById(page)
-  .classList.add("active");
+ document.querySelectorAll(".page")
+ .forEach(p=>p.classList.remove("active"));
 
-  document.querySelectorAll(".nav-btn")
-  .forEach(b => b.classList.remove("active"));
+ document.getElementById(id)
+ .classList.add("active");
 
-  button.classList.add("active");
+ document.querySelectorAll(".nav")
+ .forEach(b=>b.classList.remove("active"));
 
-  updateVideoInfo();
+ btn.classList.add("active");
+
+ updateInfo();
 }
 
-document.getElementById("imageInput")
-.addEventListener("change", function(e) {
+document.getElementById("photo")
+.addEventListener("change",function(){
 
-  const file = e.target.files[0];
+ const file=this.files[0];
 
-  if (!file) return;
+ if(!file)return;
 
-  if (selectedImage) {
-    URL.revokeObjectURL(selectedImage);
-  }
+ if(photoURL)URL.revokeObjectURL(photoURL);
 
-  selectedImage = URL.createObjectURL(file);
+ photoURL=URL.createObjectURL(file);
 
-  const preview = document.getElementById("imagePreview");
+ const img=document.getElementById("photoPreview");
 
-  preview.src = selectedImage;
-  preview.style.display = "block";
+ img.src=photoURL;
+ img.style.display="block";
 
-  document.getElementById("imageStatus")
-  .textContent = "Picture selected: " + file.name;
+ document.getElementById("photoStatus")
+ .textContent="Picture uploaded successfully!";
 
-  updateVideoInfo();
+ updateInfo();
 });
 
-function savePrompt() {
+function savePrompt(){
 
-  savedPrompt = document.getElementById("promptText").value.trim();
+ const value=document.getElementById("promptText").value.trim();
 
-  if (!savedPrompt) {
-    alert("Please write a prompt first!");
-    return;
-  }
+ if(!value){
+ alert("Please write a prompt!");
+ return;
+ }
 
-  document.getElementById("promptStatus")
-  .textContent = "Prompt saved successfully!";
+ promptSaved=value;
 
-  updateVideoInfo();
+ document.getElementById("promptStatus")
+ .textContent="Prompt saved successfully!";
+
+ updateInfo();
 }
 
-function updateVideoInfo() {
+function updateInfo(){
 
-  document.getElementById("videoImageStatus")
-  .textContent = selectedImage ?
-  "Picture: Selected ✅" :
-  "Picture: Not selected";
+ document.getElementById("checkPhoto")
+ .textContent=photoURL?
+ "Picture: Selected ✅":
+ "Picture: Not selected";
 
-  document.getElementById("videoPromptStatus")
-  .textContent = savedPrompt ?
-  "Prompt: Saved ✅" :
-  "Prompt: Not saved";
+ document.getElementById("checkPrompt")
+ .textContent=promptSaved?
+ "Prompt: Saved ✅":
+ "Prompt: Not saved";
 }
 
-function generateVideo() {
+function createVideo(){
 
-  if (!selectedImage) {
-    alert("First upload a picture!");
-    return;
-  }
+ if(!photoURL){
+ alert("Please upload a picture first!");
+ return;
+ }
 
-  if (!savedPrompt) {
-    alert("First save your prompt!");
-    return;
-  }
+ if(!promptSaved){
+ alert("Please save your prompt first!");
+ return;
+ }
 
-  document.getElementById("generateStatus")
-  .textContent =
-  "Your picture and prompt are ready. Connect an AI video generation API to create the video.";
+ document.getElementById("videoStatus")
+ .textContent=
+ "Picture and prompt are ready! AI video API and backend connection are required to generate your video.";
 }
 
-function downloadVideo() {
+function showVideo(){
 
-  const url = document.getElementById("videoUrl").value.trim();
+ const url=document.getElementById("videoLink").value.trim();
 
-  if (!url) {
-    alert("Please enter your generated video URL!");
-    return;
-  }
+ if(!validURL(url)){
+ alert("Enter a valid video URL!");
+ return;
+ }
 
-  try {
-    const parsed = new URL(url);
+ const player=document.getElementById("videoPlayer");
 
-    if (parsed.protocol !== "https:" &&
-        parsed.protocol !== "http:") {
-      throw new Error("Invalid URL");
-    }
+ player.src=url;
+ player.style.display="block";
+ player.load();
 
-    const a = document.createElement("a");
-    a.href = parsed.href;
-    a.download = "AI-Cartoon-Video.mp4";
-    a.target = "_blank";
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    document.getElementById("downloadStatus")
-    .textContent = "Download requested!";
-  } catch(e) {
-    alert("Please enter a valid video URL!");
-  }
+ document.getElementById("downloadStatus")
+ .textContent="Video preview loaded.";
 }
+
+function validURL(url){
+
+ try{
+ const u=new URL(url);
+ return u.protocol==="https:"||u.protocol==="http:";
+ }catch(e){
+ return false;
+ }
+}
+
+function downloadVideo(){
+
+ const url=document.getElementById("videoLink").value.trim();
+
+ if(!validURL(url)){
+ alert("Enter a valid video URL!");
+ return;
+ }
+
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="AI-Cartoon-Video.mp4";
+ a.target="_blank";
+
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ document.getElementById("downloadStatus")
+ .textContent="Download requested!";
+}
+
 </script>
 
 </body>
 </html>
-
